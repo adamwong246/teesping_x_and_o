@@ -9,23 +9,21 @@ class AI
     0
   end
 
-  def block(board, key)
-    win(board, key*-1)
-  end
+  def winning_moves(board, key)
 
-  def win(board, key)
+    wins = []
 
     (0..2).each do |i|
       # horizontal
       if board[i][0] + board[i][1] + board[i][2] == key*2
         if board[i][0] == 0
-          return {x:0, y:i}
+          wins << {x:0, y:i}
 
         elsif board[i][1] == 0
-          return {x:1, y:i}
+          wins << {x:1, y:i}
 
         elsif board[i][2] == 0
-          return {x:2, y:i}
+          wins << {x:2, y:i}
 
         else 
           raise 'wtf?'
@@ -35,11 +33,11 @@ class AI
       # vertical
       if board[0][i] + board[1][i] + board[2][i] == key*2
         if board[0][i] == 0
-          return {x:i, y:0}
+          wins << {x:i, y:0}
         elsif board[1][i] == 0
-          return {x:i, y:1}
+          wins << {x:i, y:1}
         elsif board[2][i] == 0
-          return {x:i, y:2}
+          wins << {x:i, y:2}
         else 
           raise 'wtf?'
         end
@@ -50,11 +48,11 @@ class AI
     #diagonal
     if board[0][0] + board[1][1] + board[2][2] == key*2
       if board[0][0] == 0
-        return {x:0, y:0}
+        wins << {x:0, y:0}
       elsif board[1][1] == 0
-        return {x:1, y:1}
+        wins << {x:1, y:1}
       elsif board[2][2] == 0
-        return {x:2, y:2}
+        wins << {x:2, y:2}
       else 
         raise 'wtf?'
       end
@@ -63,20 +61,27 @@ class AI
     # reverse diagonal
     if board[0][2] + board[1][1] + board[0][2] == key*2
       if board[0][2] == 0
-        return {x:2, y:0}
+        wins << {x:2, y:0}
       elsif board[1][1] == 0
-        return {x:1, y:1}
+        wins << {x:1, y:1}
       elsif board[2][0] == 0
-        return {x:0, y:2}
+        wins << {x:0, y:2}
       else 
         raise 'wtf?'
       end
     end
 
 
-    false
-
+    wins
   end
+
+  def blocking_moves(board, key)
+    winning_moves(board, key*-1)
+  end
+
+  def fork(board, key)
+  end
+
 end
 
 describe AI, "#score" do
@@ -86,119 +91,130 @@ describe AI, "#score" do
     bowling.score.should eq(0)
   end
 
-  describe "#win" do
+  describe "#winning_moves" do
     it "should recognize a horizontal win" do
-      AI.new.win(
+      AI.new.winning_moves(
         [
           [1,  1,  0],
           [0,  0,  0],
           [0,  0,  0]
-        ], 1).should eq({x:2, y:0})
+        ], 1).should include({x:2, y:0})
     end
 
     it "should recognize a vertical win" do
-      AI.new.win(
+      AI.new.winning_moves(
         [
           [1,  0,  0],
           [1,  0,  0],
           [0,  0,  0]
-        ], 1).should eq({x:0, y:2})
+        ], 1).should include({x:0, y:2})
     end
     
     it "should recognize a diagonal win" do
-      AI.new.win(
+      AI.new.winning_moves(
         [
           [1,  0,  0],
           [0,  0,  0],
           [0,  0,  1]
-        ], 1).should eq({x:1, y:1})
+        ], 1).should include({x:1, y:1})
     end
 
     it "should recognize a reverse diagonal win" do
-      AI.new.win(
+      AI.new.winning_moves(
         [
           [0,  0,  1],
           [0,  0,  0],
           [1,  0,  0]
-        ], 1).should eq({x:1, y:1})
+        ], 1).should include({x:1, y:1})
     end
 
 
     it "should recognize a negative win" do
-      AI.new.win(
+      AI.new.winning_moves(
         [
           [-1, -1,  0],
           [0,   0,  0],
           [0,   0,  0]
-        ], -1).should eq({x:2, y:0})
+        ], -1).should include({x:2, y:0})
     end
 
     it "should recognize a not-win" do
-      AI.new.win(
+      AI.new.winning_moves(
         [
           [1, 0, 0],
           [0, 0, 0],
           [0, 0, 0]
         ],
         1
-      ).should eq(false)
+      ).should be_empty
     end
   end
 
-  describe "#block" do
-    it "should recognize a horizontal block" do
-      AI.new.block(
+  describe "#blocking_moves" do
+    it "should recognize a horizontal blocking_moves" do
+      AI.new.blocking_moves(
+        [
+          [1,  1,  0],
+          [0,  0,  0],
+          [0,  0,  0]
+        ], -1).should include({x:2, y:0})
+    end
+
+    it "should recognize a vertical blocking_moves" do
+      AI.new.blocking_moves(
+        [
+          [1,  0,  0],
+          [1,  0,  0],
+          [0,  0,  0]
+        ], -1).should include({x:0, y:2})
+    end
+
+    it "should recognize a diagonal blocking_moves" do
+      AI.new.blocking_moves(
+        [
+          [1,  0,  0],
+          [0,  0,  0],
+          [0,  0,  1]
+        ], -1).should include({x:1, y:1})
+    end
+
+    it "should recognize a reverse diagonal blocking_moves" do
+      AI.new.blocking_moves(
+        [
+          [0,  0,  1],
+          [0,  0,  0],
+          [1,  0,  0]
+        ], -1).should include({x:1, y:1})
+    end
+
+
+    it "should recognize a negative blocking_moves" do
+      AI.new.blocking_moves(
+        [
+          [-1, -1,  0],
+          [0,   0,  0],
+          [0,   0,  0]
+        ], 1).should include({x:2, y:0})
+    end
+
+    it "should recognize a not-blocking_moves" do
+      AI.new.blocking_moves(
+        [
+          [1, 0, 0],
+          [0, 0, 0],
+          [0, 0, 0]
+        ], -1).should be_empty
+    end
+  end
+
+  describe "#fork" do
+    it "should recognize a fork" do
+      AI.new.fork(
         [
           [1,  1,  0],
           [0,  0,  0],
           [0,  0,  0]
         ], -1).should eq({x:2, y:0})
-    end
-
-    it "should recognize a vertical block" do
-      AI.new.block(
-        [
-          [1,  0,  0],
-          [1,  0,  0],
-          [0,  0,  0]
-        ], -1).should eq({x:0, y:2})
-    end
-
-    it "should recognize a diagonal block" do
-      AI.new.block(
-        [
-          [1,  0,  0],
-          [0,  0,  0],
-          [0,  0,  1]
-        ], -1).should eq({x:1, y:1})
-    end
-
-    it "should recognize a reverse diagonal block" do
-      AI.new.block(
-        [
-          [0,  0,  1],
-          [0,  0,  0],
-          [1,  0,  0]
-        ], -1).should eq({x:1, y:1})
-    end
-
-
-    it "should recognize a negative block" do
-      AI.new.block(
-        [
-          [-1, -1,  0],
-          [0,   0,  0],
-          [0,   0,  0]
-        ], 1).should eq({x:2, y:0})
-    end
-
-    it "should recognize a not-block" do
-      AI.new.block(
-        [
-          [1, 0, 0],
-          [0, 0, 0],
-          [0, 0, 0]
-        ], -1).should eq(false)
     end
   end
 
