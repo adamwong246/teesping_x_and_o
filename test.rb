@@ -1,13 +1,6 @@
 require 'pry'
 
-#my_model.rb
 class AI
-  def hit(pins)
-  end
-
-  def score
-    0
-  end
 
   def winning_moves(board, key)
 
@@ -85,11 +78,6 @@ class AI
 end
 
 describe AI, "#score" do
-  it "returns 0 for all gutter game" do
-    bowling = AI.new
-    20.times { bowling.hit(0) }
-    bowling.score.should eq(0)
-  end
 
   describe "#winning_moves" do
     it "should recognize a horizontal win" do
