@@ -72,8 +72,33 @@ class AI
     winning_moves(board, key*-1)
   end
 
-  def fork(board, key)
+  # to test for forking moves
+  # mutate the board with a every possible move
+  # if a move produces multiple wins, return both moves
+  # else return none
+  def forking_moves(board, key)
+    forking_moves =[]
+
+    (0..2).each do |y|
+      (0..2).each do |x|
+        if board[y][x] == 0
+          mutated_board = Marshal.load(Marshal.dump(board))
+          mutated_board[y][x] = key
+          mutated_winning_moves = winning_moves(mutated_board, key).uniq
+          if mutated_winning_moves.count > 1
+            forking_moves << mutated_winning_moves
+          end
+        end
+      end
+    end
+
+    forking_moves.flatten
+    
   end
+
+  # def fork_blocking_moves(board, key)
+  #   winning_moves(board, key*-1).uniq
+  # end
 
 end
 
@@ -132,9 +157,25 @@ describe AI, "#score" do
           [1, 0, 0],
           [0, 0, 0],
           [0, 0, 0]
-        ],
-        1
-      ).should be_empty
+        ],1).should be_empty
+    end
+
+    it "should recognize a not-win" do
+      AI.new.winning_moves(
+        [
+          [1, 0, 0],
+          [0, 0, 1],
+          [0, 0, 0]
+        ],1).should be_empty
+    end
+
+    it "should recognize a not-win" do
+      AI.new.winning_moves(
+        [
+          [0, 0, 0],
+          [0, 0, 0],
+          [0, 0, 0]
+        ],1).should be_empty
     end
   end
 
@@ -195,15 +236,46 @@ describe AI, "#score" do
     end
   end
 
-  describe "#fork" do
-    it "should recognize a fork" do
-      AI.new.fork(
+  describe "#forking_moves" do
+    it "should recognize a forking_moves" do
+      AI.new.forking_moves(
         [
-          [1,  1,  0],
+          [1,  0,  0],
+          [0,  0,  0],
+          [1,  0,  0]
+        ], 1).should include({x:2, y:0}, {x:2, y:2}, {x:2, y:2})
+    end
+
+    it "should recognize a non-forking_moves" do
+      AI.new.forking_moves(
+        [
+          [0,  0,  0],
           [0,  0,  0],
           [0,  0,  0]
-        ], -1).should eq({x:2, y:0})
+        ], 1).should be_empty
     end
+
   end
+
+  # describe "#fork_blocking_moves" do
+  #   it "should recognize a fork_blocking_moves" do
+  #     AI.new.fork_blocking_moves(
+  #       [
+  #         [1,  0,  1],
+  #         [0,  0,  0],
+  #         [1,  0,  0]
+  #       ], -1).should include({x:1, y:0}, {x:0, y:1})
+  #   end
+
+  #   it "should recognize a non-fork_blocking_moves" do
+  #     AI.new.fork_blocking_moves(
+  #       [
+  #         [1,  0,  0],
+  #         [0,  0,  0],
+  #         [1,  0,  0]
+  #       ], -1).should be_empty
+  #   end
+
+  # end
 
 end
