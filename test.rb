@@ -96,9 +96,9 @@ class AI
     
   end
 
-  # def fork_blocking_moves(board, key)
-  #   winning_moves(board, key*-1).uniq
-  # end
+  def fork_blocking_moves(board, key)
+    winning_moves(board, key*-1).uniq
+  end
 
 end
 
@@ -106,176 +106,121 @@ describe AI, "#score" do
 
   describe "#winning_moves" do
     it "should recognize a horizontal win" do
-      AI.new.winning_moves(
-        [
-          [1,  1,  0],
-          [0,  0,  0],
-          [0,  0,  0]
-        ], 1).should include({x:2, y:0})
+      AI.new.winning_moves([[1,  1,  0],
+                            [0,  0,  0],
+                            [0,  0,  0]], 1).should include({x:2, y:0})
     end
 
     it "should recognize a vertical win" do
-      AI.new.winning_moves(
-        [
-          [1,  0,  0],
-          [1,  0,  0],
-          [0,  0,  0]
-        ], 1).should include({x:0, y:2})
+      AI.new.winning_moves([[1,  0,  0],
+                            [1,  0,  0],
+                            [0,  0,  0]], 1).should include({x:0, y:2})
     end
     
     it "should recognize a diagonal win" do
-      AI.new.winning_moves(
-        [
-          [1,  0,  0],
-          [0,  0,  0],
-          [0,  0,  1]
+      AI.new.winning_moves([[1,  0,  0],
+                            [0,  0,  0],
+                            [0,  0,  1]
         ], 1).should include({x:1, y:1})
     end
 
     it "should recognize a reverse diagonal win" do
-      AI.new.winning_moves(
-        [
-          [0,  0,  1],
-          [0,  0,  0],
-          [1,  0,  0]
-        ], 1).should include({x:1, y:1})
+      AI.new.winning_moves([[0,  0,  1],
+                            [0,  0,  0],
+                            [1,  0,  0]], 1).should include({x:1, y:1})
     end
 
 
     it "should recognize a negative win" do
-      AI.new.winning_moves(
-        [
-          [-1, -1,  0],
-          [0,   0,  0],
-          [0,   0,  0]
-        ], -1).should include({x:2, y:0})
+      AI.new.winning_moves([[-1, -1,  0],
+                            [0,   0,  0],
+                            [0,   0,  0]], -1).should include({x:2, y:0})
     end
 
     it "should recognize a not-win" do
-      AI.new.winning_moves(
-        [
-          [1, 0, 0],
-          [0, 0, 0],
-          [0, 0, 0]
-        ],1).should be_empty
+      AI.new.winning_moves([[1, 0, 0],
+                            [0, 0, 0],
+                            [0, 0, 0]],1).should be_empty
     end
 
     it "should recognize a not-win" do
-      AI.new.winning_moves(
-        [
-          [1, 0, 0],
-          [0, 0, 1],
-          [0, 0, 0]
-        ],1).should be_empty
+      AI.new.winning_moves([[1, 0, 0],
+                            [0, 0, 1],
+                            [0, 0, 0]],1).should be_empty
     end
 
     it "should recognize a not-win" do
-      AI.new.winning_moves(
-        [
-          [0, 0, 0],
-          [0, 0, 0],
-          [0, 0, 0]
-        ],1).should be_empty
+      AI.new.winning_moves([[0, 0, 0],
+                            [0, 0, 0],
+                            [0, 0, 0]],1).should be_empty
     end
   end
 
   describe "#blocking_moves" do
     it "should recognize a horizontal blocking_moves" do
-      AI.new.blocking_moves(
-        [
-          [1,  1,  0],
-          [0,  0,  0],
-          [0,  0,  0]
-        ], -1).should include({x:2, y:0})
+      AI.new.blocking_moves([[1,  1,  0],
+                            [0,  0,  0],
+                            [0,  0,  0]], -1).should include({x:2, y:0})
     end
 
     it "should recognize a vertical blocking_moves" do
-      AI.new.blocking_moves(
-        [
-          [1,  0,  0],
-          [1,  0,  0],
-          [0,  0,  0]
-        ], -1).should include({x:0, y:2})
+      AI.new.blocking_moves([[1,  0,  0],
+                            [1,  0,  0],
+                            [0,  0,  0]], -1).should include({x:0, y:2})
     end
 
     it "should recognize a diagonal blocking_moves" do
-      AI.new.blocking_moves(
-        [
-          [1,  0,  0],
-          [0,  0,  0],
-          [0,  0,  1]
-        ], -1).should include({x:1, y:1})
+      AI.new.blocking_moves([[1,  0,  0],
+                            [0,  0,  0],
+                            [0,  0,  1]], -1).should include({x:1, y:1})
     end
 
     it "should recognize a reverse diagonal blocking_moves" do
-      AI.new.blocking_moves(
-        [
-          [0,  0,  1],
-          [0,  0,  0],
-          [1,  0,  0]
-        ], -1).should include({x:1, y:1})
+      AI.new.blocking_moves([[0,  0,  1],
+                            [0,  0,  0],
+                            [1,  0,  0]], -1).should include({x:1, y:1})
     end
 
 
     it "should recognize a negative blocking_moves" do
-      AI.new.blocking_moves(
-        [
-          [-1, -1,  0],
-          [0,   0,  0],
-          [0,   0,  0]
-        ], 1).should include({x:2, y:0})
+      AI.new.blocking_moves([[-1, -1,  0],
+                            [0,   0,  0],
+                            [0,   0,  0]], 1).should include({x:2, y:0})
     end
 
     it "should recognize a not-blocking_moves" do
-      AI.new.blocking_moves(
-        [
-          [1, 0, 0],
-          [0, 0, 0],
-          [0, 0, 0]
-        ], -1).should be_empty
+      AI.new.blocking_moves([[1, 0, 0],
+                            [0, 0, 0],
+                            [0, 0, 0]], -1).should be_empty
     end
   end
 
   describe "#forking_moves" do
-    it "should recognize a forking_moves" do
-      AI.new.forking_moves(
-        [
-          [1,  0,  0],
-          [0,  0,  0],
-          [1,  0,  0]
-        ], 1).should include({x:2, y:0}, {x:2, y:2}, {x:2, y:2})
+    it "should recognize forking_moves" do
+      AI.new.forking_moves([[1,  0,  0],
+                            [0,  0,  0],
+                            [1,  0,  0]], 1).should include({x:2, y:0}, {x:1, y:1}, {x:2, y:2})
     end
 
-    it "should recognize a non-forking_moves" do
-      AI.new.forking_moves(
-        [
-          [0,  0,  0],
-          [0,  0,  0],
-          [0,  0,  0]
-        ], 1).should be_empty
+    it "should recognize non-forking_moves" do
+      AI.new.forking_moves([[0,  0,  0],
+                            [0,  0,  0],
+                            [0,  0,  0]], 1).should be_empty
     end
-
   end
 
-  # describe "#fork_blocking_moves" do
-  #   it "should recognize a fork_blocking_moves" do
-  #     AI.new.fork_blocking_moves(
-  #       [
-  #         [1,  0,  1],
-  #         [0,  0,  0],
-  #         [1,  0,  0]
-  #       ], -1).should include({x:1, y:0}, {x:0, y:1})
-  #   end
+  describe "#fork_blocking_moves" do
+    it "should recognize fork_blocking_moves" do
+      AI.new.fork_blocking_moves([[1,  0,  0],
+                                  [0,  0,  0],
+                                  [1,  0,  0]], -1).should include({x:2, y:0}, {x:1, y:1}, {x:2, y:2})
+    end
 
-  #   it "should recognize a non-fork_blocking_moves" do
-  #     AI.new.fork_blocking_moves(
-  #       [
-  #         [1,  0,  0],
-  #         [0,  0,  0],
-  #         [1,  0,  0]
-  #       ], -1).should be_empty
-  #   end
-
-  # end
+    it "should recognize non-fork_blocking_moves" do
+      AI.new.fork_blocking_moves([[0,  0,  0],
+                                  [0,  0,  0],
+                                  [0,  0,  0]], -1).should be_empty
+    end
+  end
 
 end
