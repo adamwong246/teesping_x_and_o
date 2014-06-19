@@ -3,6 +3,14 @@ require_relative 'AI.rb'
 
 describe AI, "#score" do
 
+  describe "#move" do
+    it "should recognize this move" do
+      AI.new.make_move([[0,  0,  0],
+                        [0,  1,  0],
+                        [0,  0,  1]], -1).should eq({x:0, y:0})
+    end
+  end
+
   describe "#winning_moves" do
     it "should recognize a horizontal win" do
       AI.new.winning_moves([[1,  1,  0],
@@ -176,7 +184,6 @@ describe AI, "#score" do
                                                               {x:2, y:0},
                                                               {x:0, y:2}]
     end
-
   end
 
   describe "#empty_side_moves" do 
