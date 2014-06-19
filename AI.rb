@@ -56,11 +56,9 @@ class Referee
       # reverse diagonal
       @board[0][2] + @board[1][1] + @board[2][0] == move[:z]*3
 
-        if @players[:human] == c
-          # binding.pry
+        if @players[:human] == move[:z]
           abort "Winner is human (#{@binary_to_xo[c]})"
-        elsif @players[:computer] == c
-          # binding.pry
+        elsif @players[:computer] == move[:z]
           abort "Winner is computer (#{@binary_to_xo[c]})"
         end
       end
