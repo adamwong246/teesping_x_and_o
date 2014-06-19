@@ -30,7 +30,7 @@ class Referee
       @board[move[:y].to_i][move[:x].to_i] = move[:z]
       draw
     else
-      raise 'NOT A VALID MOVE'
+      abort 'NOT A VALID MOVE'
     end
 
     abort "CAT" if @board.all? {|sub_array|
