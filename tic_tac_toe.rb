@@ -1,5 +1,6 @@
 require 'pry'
 require './AI.rb'
+require './Referee.rb'
 
 def human_move
   puts "make your move... (x, y)"
