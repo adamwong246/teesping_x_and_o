@@ -3,7 +3,7 @@ require './AI.rb'
 require './Referee.rb'
 
 def human_move
-  puts "make your move... (x, y)"
+  puts "make your move as #{@referee.players[:human]}... (horz, vert)"
   inputs =/(\d),\s?(\d)/.match(gets.chomp.downcase)
   move = {x: inputs[1], y: inputs[2], z: @referee.players[:human]}
   puts "Human makes move #{move[:x]}, #{move[:y]}: #{move[:z]}"
@@ -27,7 +27,7 @@ when 'x'
   puts "Ok, you are x and computer is o. Your move first"
   @referee.players = {
     human: :x,
-    computer: :y
+    computer: :o
   }
 
   @referee.draw
@@ -35,7 +35,7 @@ when 'x'
 when 'o'
   puts "Ok, you are o and computer is x. Computer moves first"
   @referee.players = {
-    human: :y,
+    human: :o,
     computer: :x
   }
 
