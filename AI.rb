@@ -30,7 +30,7 @@ class AI
 
     (0..2).each do |i|
       # horizontal
-      if "#{board[i][0]}#{board[i][1]}#{board[i][2]}".count(:x.to_s) == 2
+      if "#{board[i][0]}#{board[i][1]}#{board[i][2]}".count(key.to_s) == 2
         if board[i][0] == :_
           wins << {x:0, y:i}
         elsif board[i][1] == :_
@@ -41,7 +41,7 @@ class AI
       end
 
       # vertical
-      if "#{board[0][i]}#{board[1][i]}#{board[2][i]}".count(:x.to_s) == 2
+      if "#{board[0][i]}#{board[1][i]}#{board[2][i]}".count(key.to_s) == 2
         if board[0][i] == :_
           wins << {x:i, y:0}
         elsif board[1][i] == :_
@@ -54,7 +54,7 @@ class AI
     end
 
     #diagonal
-    if "#{board[0][0]}#{board[1][1]}#{board[2][2]}".count(:x.to_s) == 2
+    if "#{board[0][0]}#{board[1][1]}#{board[2][2]}".count(key.to_s) == 2
       if board[0][0] == :_
         wins << {x:0, y:0}
       elsif board[1][1] == :_
@@ -65,7 +65,7 @@ class AI
     end
 
     # reverse diagonal
-    if "#{board[0][2]}#{board[1][1]}#{board[2][0]}".count(:x.to_s) == 2
+    if "#{board[0][2]}#{board[1][1]}#{board[2][0]}".count(key.to_s) == 2
       if board[0][2] == :_
         wins << {x:2, y:0}
       elsif board[1][1] == :_

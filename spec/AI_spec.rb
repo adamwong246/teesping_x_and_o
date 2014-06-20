@@ -5,6 +5,12 @@ describe AI, "#score" do
 
   describe "#move" do
     it "should recognize this move" do
+      AI.new.make_move([[:x, :x, :o],
+                        [:o, :o, :_],
+                        [:x, :_, :x]], :o).should eq({x:2, y:1})
+    end
+
+    it "should recognize this move" do
       AI.new.make_move([[:_, :_, :_],
                         [:_, :x, :_],
                         [:_, :_, :x]], :o).should eq({x:0, y:0})
@@ -12,6 +18,12 @@ describe AI, "#score" do
   end
 
   describe "#winning_moves" do
+    it "should recognize this move" do
+      AI.new.winning_moves([[:x, :x, :o],
+                            [:o, :o, :_],
+                            [:x, :_, :x]], :o).should eq([{x:2, y:1}])
+    end
+
     it "should recognize a horizontal win" do
       AI.new.winning_moves([[:x,  :x,  :_],
                             [:_,  :_,  :_],
