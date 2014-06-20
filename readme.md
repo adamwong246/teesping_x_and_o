@@ -1,8 +1,8 @@
-readme
+#### readme
 
-- bundle install    # installs gems
-- rspec             # runs tests
-- ruby tic_tac_toe  # execute game
+- install the gems ```bundle install```
+- run the tests ```rspec```
+- play the game ```ruby tic_tac_toe```
 
 There are 3 components
 - AI: the computer player
@@ -12,7 +12,7 @@ There are 3 components
 The AI simply implements the known best algorithm for playing the game as described here https://en.wikipedia.org/wiki/Tic-tac-toe#Strategy as follows
 
 1. Win: If the player has two in a row, they can place a third to get three in a row.
-The AI simply checks the 8 possible winning states.
+The AI simply checks the 8 possible winning states, returning the first empty space which will fullfill the win.
 
 2. Block: If the opponent has two in a row, the player must play the third themself to block the opponent.
 The AI reuses the winning_moves method. Acting as it's opponent, it looks for winning moves then blocks that move with it's own mark.
